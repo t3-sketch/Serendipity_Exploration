@@ -1,5 +1,6 @@
 .DS_Store
 .ipynb_checkpoints/
+project4/.ipynb_checkpoints/
 .venv/
 __pycache__/
 project4/Data/audio_samples/
