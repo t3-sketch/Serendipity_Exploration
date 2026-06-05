@@ -1,15 +1,4 @@
-# Jupyter Notebook checkpoints
+.DS_Store
 .ipynb_checkpoints/
-*/.ipynb_checkpoints/
-
-# Python cache
+.venv/
 __pycache__/
-*.pyc
-
-# Data files (GitHubの容量制限回避とデータ漏洩防止のため、生データは管理外にするのが鉄則)
-*.csv
-project4/Data/
-
-# Generated plots (ノートブックを動かせば再生成できるため、管理外が推奨)
-boxplot_*.png
-iframe_figures/
