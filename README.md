@@ -283,5 +283,3 @@ The table below shows the top 3 tracks per genre ranked by Serendipity Score. Ea
 | k-pop     | Sakka Podu                                                  | KK                  |        5.49 |     42 |     67.82 | 0.79 |
 
 _Serendipity Score = (predicted − actual popularity) × (1 − fame score). Higher = more undiscovered._
-
-_Serendipity Score = (predicted − actual popularity) × (1 − fame score). Higher is more undiscovered._
