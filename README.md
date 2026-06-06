@@ -135,7 +135,7 @@ We analyzed the missingness of `tempo` (which has non-trivial missingness) using
 - **Does not depend on `mode`:** Running the same permutation test against `mode` (major/minor key) gave a large p-value (≈ 0.26). We fail to reject the null hypothesis: whether a track is in a major or minor key tells us nothing about why `tempo` is missing, consistent with **MCAR** with respect to this column.
 
 <iframe
-  src="assets/missingness-genre.html"
+  src="assets/miss-genre.html"
   width="800"
   height="500"
   frameborder="0"
@@ -185,12 +185,10 @@ We split the data with `train_test_split(test_size=0.25, random_state=42)` and e
 
 | Split | RMSE   |
 | ----- | ------ |
-| Train | 18.627 |
-| Test  | 17.601 |
+| Train | 18.485 |
+| Test  | 17.864 |
 
-<!-- VSCode で再実行した baseline の数値とここが一致しているか確認 -->
-
-We do **not** consider this model "good." A test RMSE of ~17.6 means predictions are off by roughly 17 popularity points on average — large on a 0–100 scale. Notably, the train RMSE is slightly _higher_ than the test RMSE, a sign that the linear model is **underfitting**: a single linear relationship cannot capture the non-linear ways audio features interact to drive popularity. This motivates a more expressive final model.
+We do **not** consider this model "good." A test RMSE of ~17 means predictions are off by roughly 17 popularity points on average — large on a 0–100 scale. Notably, the train RMSE is slightly _higher_ than the test RMSE, a sign that the linear model is **underfitting**: a single linear relationship cannot capture the non-linear ways audio features interact to drive popularity. This motivates a more expressive final model.
 
 ---
 
@@ -213,12 +211,10 @@ The best combination was **`max_depth = 10`** and **`min_samples_split = 2`**, s
 
 | Split      | Baseline (Linear) | Final (Random Forest) |
 | ---------- | ----------------- | --------------------- |
-| Train RMSE | 18.627            | 12.373                |
-| Test RMSE  | 17.601            | 16.839                |
+| Train RMSE | 18.485            | 12.373                |
+| Test RMSE  | 17.864            | 16.839                |
 
-<!-- VSCode 再実行後の数値と一致確認 -->
-
-The final model lowers test RMSE from **17.601** to **16.839** — an improvement of about **0.76 points (~4.3%)**. The gain is modest by design: popularity is intrinsically hard to predict from audio alone because real-world popularity is driven heavily by fame, marketing, and virality — signals we intentionally excluded. That deliberate blindness is the engine of the serendipity logic, not a weakness. The remaining train/test gap (~4.5 points) reflects the mild overfitting Random Forests are prone to, reined in by the `max_depth = 10` ceiling chosen via cross-validation.
+The final model lowers test RMSE from **17.864** to **16.839** — an improvement of about **0.76 points (~4.3%)**. The gain is modest by design: popularity is intrinsically hard to predict from audio alone because real-world popularity is driven heavily by fame, marketing, and virality — signals we intentionally excluded. That deliberate blindness is the engine of the serendipity logic, not a weakness. The remaining train/test gap reflects the mild overfitting Random Forests are prone to, reined in by the `max_depth = 10` ceiling chosen via cross-validation.
 
 ---
 
@@ -235,12 +231,5 @@ We asked whether the final model predicts popularity equally well for commercial
 - **Significance level:** α = 0.05.
 
 Using only the final fitted model, the test RMSE was **17.34** for niche genres and **16.38** for mainstream genres — an observed gap of **0.963**. A permutation test that shuffled the group labels 5,000 times returned **p = 0.3438**.
-
-<iframe
-  src="assets/fairness.html"
-  width="800"
-  height="500"
-  frameborder="0"
-></iframe>
 
 Since p = 0.3438 > 0.05, we **fail to reject** the null hypothesis. We do not have statistically significant evidence that the model's accuracy differs between mainstream and niche genres; a gap of this size is consistent with random chance. This is reassuring for the serendipity use case — the residual-based recommendations appear roughly as trustworthy across both segments. That said, "fail to reject" is not proof of perfect parity: a larger test set could reveal smaller real differences than this one had the power to detect.
